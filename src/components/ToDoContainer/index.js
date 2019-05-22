@@ -10,40 +10,10 @@ class ToDoContainer extends Component {
     super();
     this.state = {
       items: [], // Will store all the todos and display
-      currentText: "", // Todo inputted by user
       currentID: 1,
       searchText: ""
     };
   }
-
-  // Update what the current item is based on user input
-  handleInput = item => {
-    const todo = item.target.value;
-    const currentText = todo;
-    this.setState({ currentText });
-  };
-
-  // Add an item to the list
-  addTodo = obj => {
-    obj.preventDefault();
-
-    // Make sure the current item is not empty before adding
-    if (this.state.currentText !== "") {
-      const items = [
-        ...this.state.items,
-        {
-          id: this.state.currentID + 1,
-          text: this.state.currentText,
-          status: true
-        }
-      ];
-      this.setState({
-        items: items,
-        currentText: "", // Reset text the next user input
-        currentID: this.state.currentID + 1 // New ID value
-      });
-    }
-  };
 
   // Delete an item from the list
   deleteTodo = id => {
@@ -59,15 +29,9 @@ class ToDoContainer extends Component {
     });
   };
 
-  searchTodos = input => {
-    const matches = this.state.items.filter(t => {
-      t.text.match(input) !== null ? (t.status = true) : (t.status = false);
-      return t;
-    });
-
-    this.setState({
-      items: matches
-    });
+  // Update parent state
+  updateParent = (items, currentID) => {
+    this.setState({ items: items, currentID: currentID });
   };
 
   // Handle inputs from search
@@ -75,7 +39,6 @@ class ToDoContainer extends Component {
     const item = text.target.value;
     const searchText = item;
     this.setState({ searchText });
-    this.searchTodos(item);
   };
 
   render() {
@@ -83,14 +46,18 @@ class ToDoContainer extends Component {
       <Container id="root">
         <SubContainer>
           <Text>Current Todos:</Text>
-          <TodoItems todos={this.state.items} deleteTodo={this.deleteTodo} />
+          <TodoItems
+            todos={this.state.items}
+            deleteTodo={this.deleteTodo}
+            searchText={this.state.searchText}
+          />
         </SubContainer>
         <SubContainer>
           <AddTodo
             addTodo={this.addTodo}
-            inputElement={this.inputElement}
             handleInput={this.handleInput}
-            currentText={this.state.currentText}
+            updateParent={this.updateParent}
+            parentState={this.state}
           />
           <SearchTodos
             currentText={this.state.searchText}

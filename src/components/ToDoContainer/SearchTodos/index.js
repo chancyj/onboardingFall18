@@ -1,18 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import { Input } from "./styles";
 
-class SearchTodos extends Component {
-  render() {
-    return (
-      // <Container>
-      <Input
-        value={this.props.searchText}
-        placeholder="Search Todos"
-        onChange={this.props.handleSearch}
-      />
-      // </Container>
-    );
-  }
-}
+const SearchTodos = ({ searchText, handleSearch }) => (
+  <Input
+    value={searchText}
+    placeholder="Search Todos"
+    onChange={handleSearch}
+  />
+);
 
 export default SearchTodos;

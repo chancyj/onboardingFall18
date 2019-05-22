@@ -4,7 +4,7 @@ import { ListItem, DeleteButton, Text } from "./styles";
 class TodoItems extends Component {
   // Function to create the list
   makeList = todo => {
-    if (todo.status) {
+    if (todo.text.match(this.props.searchText) != null) {
       return (
         <ListItem key={todo.id}>
           {todo.text} {"  "}
